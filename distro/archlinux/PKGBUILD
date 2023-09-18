@@ -1,0 +1,23 @@
+pkgname=pipeflow
+pkgver=0.1
+pkgrel=1
+pkgdesc="Fun-In-Progress GUI for PipeWire"
+arch=('any')
+url=""
+license=('MIT')
+depends=('pyside6' 'python3')
+
+package() {
+	cd ../../..
+	install -dm755 "$pkgdir/usr/lib/python3.11/site-packages/libpipeflow"
+	for file in libpipeflow/*.py; do
+		install -m644 "$file" "$pkgdir/usr/lib/python3.11/site-packages/libpipeflow/"
+	done
+	install -dm755 "$pkgdir/usr/lib/qt6/qml/PipeFlow"
+	for file in PipeFlow/*; do
+		install -m644 "$file" "$pkgdir/usr/lib/qt6/qml/PipeFlow/"
+	done
+	install -Dm755 pipeflow "$pkgdir/usr/bin/pipeflow"
+	install -Dm644 main.qml "$pkgdir/usr/lib/pipeflow/main.qml"
+	install -Dm644 theme.ini "$pkgdir/etc/xdg/pipeflow/theme.ini"
+}

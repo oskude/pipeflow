@@ -1,0 +1,10 @@
+module PipeFlow
+Node 1.0 Node.qml
+ToolTip 1.0 ToolTip.qml
+Number 1.0 Number.qml
+Slider 1.0 Slider.qml
+Text 1.0 Text.qml
+Canvas 1.0 Canvas.qml
+NodeHeader 1.0 NodeHeader.qml
+Port 1.0 Port.qml
+Link 1.0 Link.qml

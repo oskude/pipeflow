@@ -1,0 +1,4 @@
+__pycache__
+distro/**
+!distro/archlinux
+!distro/archlinux/PKGBUILD

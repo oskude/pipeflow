@@ -1,0 +1,79 @@
+#!/usr/bin/python
+
+# die on ctrl+c in terminal
+import signal
+signal.signal(signal.SIGINT, signal.SIG_DFL)
+
+# global logging
+import logging
+formatter = logging.Formatter(fmt='%(message)s')
+handler = logging.StreamHandler()
+handler.setFormatter(formatter)
+logger = logging.getLogger("main")
+logger.setLevel(logging.ERROR) # TODO: get from user
+logger.addHandler(handler)
+
+# better for small font sizes
+import os
+os.environ["QML_DISABLE_DISTANCEFIELD"] = "1"
+
+import sys
+from PySide6.QtWidgets import QApplication
+from PySide6.QtQml import QQmlApplicationEngine
+from libpipeflow.pw_cli import PWCli
+from libpipeflow.pw_link import PWLink
+from libpipeflow.pw_mon import PWMon
+from libpipeflow.node import NodeModel
+from libpipeflow.link import LinkModel
+from libpipeflow.theme import Theme
+
+# xdg dirs
+from pathlib import Path
+home_dir = Path(os.environ.get("HOME"))
+user_config_dir = Path(os.environ.get("XDG_CONFIG_HOME") \
+	or home_dir.joinpath(".config")).joinpath("pipeflow")
+system_config_dirs = []
+if os.environ.get("XDG_CONFIG_DIRS"):
+	for p in os.environ.get("XDG_CONFIG_DIRS").split(":"):
+		pp = Path(p).joinpath("pipeflow")
+		system_config_dirs.append(pp)
+else:
+	system_config_dirs.append(Path("/etc/xdg/pipeflow"))
+# find theme
+if Path(__file__).parent.joinpath("theme.ini").exists():
+	theme_file = Path(__file__).parent.joinpath("theme.ini")
+elif user_config_dir.joinpath("theme.ini").exists():
+	theme_file = user_config_dir.joinpath("theme.ini")
+else:
+	for scd in system_config_dirs:
+		if scd.joinpath("theme.ini").exists():
+			theme_file = scd.joinpath("theme.ini")
+
+app = QApplication()
+engine = QQmlApplicationEngine()
+nodes = NodeModel()
+links = LinkModel()
+
+pw_cli = PWCli()
+pw_link = PWLink()
+pw_mon = PWMon(nodes, links)
+theme = Theme(theme_file)
+engine.rootContext().setContextProperty("NodeModel", nodes)
+engine.rootContext().setContextProperty("LinkModel", links)
+engine.rootContext().setContextProperty("PwLink", pw_link)
+engine.rootContext().setContextProperty("PwCli", pw_cli)
+engine.rootContext().setContextProperty("Theme", theme)
+
+# TODO: better way to not load system qml things when dev
+if Path(__file__).parent.joinpath(".git").is_dir:
+	engine.addImportPath(Path(__file__).parent)
+
+if Path(__file__).parent.joinpath("main.qml").exists():
+	logger.setLevel(logging.DEBUG)
+	engine.load("main.qml")
+elif Path("/usr/lib/pipeflow/main.qml").exists():
+	engine.load(Path("/usr/lib/pipeflow/main.qml"))
+
+if not engine.rootObjects():
+	sys.exit(-1)
+sys.exit(app.exec())
