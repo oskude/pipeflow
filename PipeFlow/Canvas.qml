@@ -2,7 +2,7 @@ import QtQuick
 import PipeFlow as My
 
 Item {
-	id: root
+	id: canvas
 	clip: true
 	MouseArea {
 		id: canvasMouse
@@ -59,15 +59,15 @@ Item {
 	function findSideWithMostSpace (x, y, w, h) {
 		let l = x
 		let ret = My.Canvas.ItemSide.Top
-		if (root.width - x - w > l) {
-			l = root.width - x - w
+		if (canvas.width - x - w > l) {
+			l = canvas.width - x - w
 			ret = My.Canvas.ItemSide.Right
 		}
-		if (root.height - y - h > l) {
-			l = root.height - y - h
+		if (canvas.height - y - h > l) {
+			l = canvas.height - y - h
 			ret = My.Canvas.ItemSide.Bottom
 		}
-		if (root.width - y > l) {
+		if (canvas.width - y > l) {
 			l = y
 			ret = My.Canvas.ItemSide.Left
 		}

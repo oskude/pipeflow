@@ -9,8 +9,8 @@ Rectangle {
 	property int portDir // 0 = output, 1 = input
 	property Item node: Item{}
 	                    // lol, node.x is only here so that we get triggered ;P TODO? better way?
-	property int linkX: (node.x - node.x) + (node.y - node.y) + mapToGlobal(portDir === 0 ? width : x, 0).x
-	property int linkY: (node.x - node.x) + (node.y - node.y) + mapToGlobal(0, Math.round(height/2)).y
+	property int linkX: (node.x - node.x) + (node.y - node.y) + mapToItem(canvas, portDir === 0 ? width : x, 0).x
+	property int linkY: (node.x - node.x) + (node.y - node.y) + mapToItem(canvas, 0, Math.round(height/2)).y
 	implicitWidth: text.contentWidth
 	implicitHeight: text.height
 	color: linkBuffer[portDir].includes(portId) ? Theme.colorPriLow : Theme.colorLayer2

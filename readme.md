@@ -13,6 +13,8 @@ Fun-In-Progress GUI for [PipeWire](https://pipewire.org/)
 
 ## Todo
 
+- for wireplumber things wait for v0.5, has big changes?
+  - https://www.collabora.com/news-and-blog/blog/2023/06/15/wireplumber-event-dispatcher-new-simplified-way-handling-pipewire-events/
 - user change node/port label
 - user set auto/default links/nodes!
 - how to best auto layout?
@@ -26,7 +28,6 @@ Fun-In-Progress GUI for [PipeWire](https://pipewire.org/)
 
 ## Bugs
 
-- Link lines are drawn on wrong position on X11 (for you too?)
 - find them polish loops... (and why does it still work, or what is not working?!)
 
 ## Theme
@@ -78,6 +79,7 @@ $ make hot
 
 ## Links
 
+- TODO: any thips? https://github.com/dyegoaurelio/simple-wireplumber-gui
 - https://docs.pipewire.org/page_objects_design.html
 - https://doc.qt.io/qtforpython-6/examples/example_qml_editingmodel.html
 - volume infos https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/3351
